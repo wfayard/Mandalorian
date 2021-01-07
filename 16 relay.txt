@@ -31,9 +31,6 @@ api:
 
 ota:
 
-
-
-
 web_server:
   port: 80
 
@@ -194,8 +191,9 @@ switch:
     - delay: 300ms
     - switch.turn_off: relay_channel_9
     
+
 - platform: gpio
-  id: relay_channel_12
+  id: relay_channel_10
   pin: 
     mcp23017: mcp23017_hub
     number: 9
@@ -206,12 +204,12 @@ switch:
   name: "Lights 10"
   icon: mdi:electric-switch
   turn_on_action:
-    - switch.turn_on: relay_channel_12
+    - switch.turn_on: relay_channel_10
     - delay: 300ms
-    - switch.turn_off: relay_channel_12 
-    
+    - switch.turn_off: relay_channel_10 
+  
 - platform: gpio
-  id: relay_channel_13
+  id: relay_channel_11
   pin: 
     mcp23017: mcp23017_hub
     number: 10
@@ -222,12 +220,12 @@ switch:
   name: "Lights 11"
   icon: mdi:electric-switch
   turn_on_action:
-    - switch.turn_on: relay_channel_13
+    - switch.turn_on: relay_channel_11
     - delay: 300ms
-    - switch.turn_off: relay_channel_13
+    - switch.turn_off: relay_channel_11 
     
 - platform: gpio
-  id: relay_channel_14
+  id: relay_channel_12
   pin: 
     mcp23017: mcp23017_hub
     number: 11
@@ -238,15 +236,15 @@ switch:
   name: "Lights 12"
   icon: mdi:electric-switch
   turn_on_action:
-    - switch.turn_on: relay_channel_14
+    - switch.turn_on: relay_channel_12
     - delay: 300ms
-    - switch.turn_off: relay_channel_14 
+    - switch.turn_off: relay_channel_12
     
 - platform: gpio
-  id: relay_channel_15
+  id: relay_channel_13
   pin: 
     mcp23017: mcp23017_hub
-    number: 13
+    number: 12
     inverted: true
   restore_mode: ALWAYS_OFF
   
@@ -254,15 +252,15 @@ switch:
   name: "Lights 13"
   icon: mdi:electric-switch
   turn_on_action:
-    - switch.turn_on: relay_channel_15
+    - switch.turn_on: relay_channel_13
     - delay: 300ms
-    - switch.turn_off: relay_channel_15
+    - switch.turn_off: relay_channel_13
     
 - platform: gpio
-  id: relay_channel_16
+  id: relay_channel_14
   pin: 
     mcp23017: mcp23017_hub
-    number: 14
+    number: 13
     inverted: true
   restore_mode: ALWAYS_OFF
   
@@ -270,15 +268,15 @@ switch:
   name: "Lights 14"
   icon: mdi:electric-switch
   turn_on_action:
-    - switch.turn_on: relay_channel_16
+    - switch.turn_on: relay_channel_14
     - delay: 300ms
-    - switch.turn_off: relay_channel_16
+    - switch.turn_off: relay_channel_14
     
 - platform: gpio
-  id: relay_channel_11
+  id: relay_channel_15
   pin: 
     mcp23017: mcp23017_hub
-    number: 15
+    number: 14
     inverted: true
   restore_mode: ALWAYS_OFF
   
@@ -286,15 +284,15 @@ switch:
   name: "Lights 15"
   icon: mdi:electric-switch
   turn_on_action:
-    - switch.turn_on: relay_channel_11
+    - switch.turn_on: relay_channel_15
     - delay: 300ms
-    - switch.turn_off: relay_channel_11 
+    - switch.turn_off: relay_channel_15 
     
 - platform: gpio
-  id: relay_channel_10
+  id: relay_channel_16
   pin: 
     mcp23017: mcp23017_hub
-    number: 16
+    number: 15
     inverted: true
   restore_mode: ALWAYS_OFF
   
@@ -302,6 +300,6 @@ switch:
   name: "Lights 16"
   icon: mdi:electric-switch
   turn_on_action:
-    - switch.turn_on: relay_channel_10
+    - switch.turn_on: relay_channel_16
     - delay: 300ms
-    - switch.turn_off: relay_channel_10 
+    - switch.turn_off: relay_channel_16 
