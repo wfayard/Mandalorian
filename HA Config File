@@ -1,0 +1,266 @@
+
+binary_sensor:
+  - platform: mqtt
+    state_topic: "voltage_input_1"
+    name: "sensor_1"
+    unique_id: "voltage_input_1_sensor_1"
+  - platform: mqtt
+    state_topic: "voltage_input_2"
+    name: "sensor_2"
+    unique_id: "voltage_input_2_sensor_2"  
+  - platform: mqtt
+    state_topic: "voltage_input_3"
+    name: "sensor_3"
+    unique_id: "voltage_input_3_sensor_3"
+  - platform: mqtt
+    state_topic: "voltage_input_4"
+    name: "sensor_4"
+    unique_id: "voltage_input_4_sensor_4" 
+  - platform: mqtt
+    state_topic: "voltage_input_5"
+    name: "sensor_5"
+    unique_id: "voltage_input_5_sensor_5"
+  - platform: mqtt
+    state_topic: "voltage_input_6"
+    name: "sensor_6"
+    unique_id: "voltage_input_6_sensor_6"
+  - platform: mqtt
+    state_topic: "voltage_input_7"
+    name: "sensor_7"
+    unique_id: "voltage_input_7_sensor_7"
+  - platform: mqtt
+    state_topic: "voltage_input_7"
+    name: "sensor_7"
+    unique_id: "voltage_input_7_sensor_7"
+  - platform: mqtt
+    state_topic: "voltage_input_8"
+    name: "sensor_8"
+    unique_id: "voltage_input_8_sensor_8"
+  - platform: mqtt
+    state_topic: "voltage_input_9"
+    name: "sensor_9"
+    unique_id: "voltage_input_9_sensor_9"
+  - platform: mqtt
+    state_topic: "voltage_input_10"
+    name: "sensor_10"
+    unique_id: "voltage_input_1_sensor_10"
+  - platform: mqtt
+    state_topic: "voltage_input_11"
+    name: "sensor_11"
+    unique_id: "voltage_input_11_sensor_11"
+  - platform: mqtt
+    state_topic: "voltage_input_12"
+    name: "sensor_12"
+    unique_id: "voltage_input_12_sensor_12"
+  - platform: mqtt
+    state_topic: "voltage_input_13"
+    name: "sensor_13"
+    unique_id: "voltage_input_13_sensor_13"
+  - platform: mqtt
+    state_topic: "voltage_input_14"
+    name: "sensor_14"
+    unique_id: "voltage_input_14_sensor_14"
+  - platform: mqtt
+    state_topic: "voltage_input_15"
+    name: "sensor_15"
+    unique_id: "voltage_input_16_sensor_15"
+  - platform: mqtt
+    state_topic: "voltage_input_16"
+    name: "sensor_16"
+    unique_id: "voltage_input_16_sensor_16"    
+    
+    
+  
+    
+switch:  
+  - platform: template
+    switches:
+      v_switch_1:
+        unique_id:  houselights1
+        friendly_name: "v1"
+        value_template: "{{ is_state('binary_sensor.sensor_1', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_1_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_1_off
+           
+
+      v_switch_2:
+        unique_id:  houselights2
+        friendly_name: "v2"
+        value_template: "{{ is_state('binary_sensor.sensor_2', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_2_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_2_off
+           
+
+      v_switch_3:
+        unique_id:  houselights3
+        friendly_name: "v3"
+        value_template: "{{ is_state('binary_sensor.sensor_3', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_3_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_3_off     
+           
+
+      v_switch_4:
+        unique_id:  houselights4
+        friendly_name: "v4"
+        value_template: "{{ is_state('binary_sensor.sensor_4', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_4_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_4_off
+           
+
+      v_switch_5:
+        unique_id:  houselights5
+        friendly_name: "v5"
+        value_template: "{{ is_state('binary_sensor.sensor_5', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_5_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_5_off
+           
+
+      v_switch_6:
+        unique_id:  houselights6
+        friendly_name: "v6"
+        value_template: "{{ is_state('binary_sensor.sensor_6', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_6_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_6_off
+           
+
+      v_switch_7:
+        unique_id:  houselightsseven
+        friendly_name: "v7"
+        value_template: "{{ is_state('binary_sensor.sensor_7', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_7_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_7_off
+
+      v_switch_8:
+        unique_id:  houselights8
+        friendly_name: "v8"
+        value_template: "{{ is_state('binary_sensor.sensor_8', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_8_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_8_off
+           
+
+      v_switch_9:
+        unique_id:  houselights9
+        friendly_name: "v9"
+        value_template: "{{ is_state('binary_sensor.sensor_9', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_9_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_9_off
+           
+
+      v_switch_10:
+        unique_id:  houselights10
+        friendly_name: "v10"
+        value_template: "{{ is_state('binary_sensor.sensor_10', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_10_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_10_off
+           
+
+      v_switch_11:
+        unique_id:  houselights11
+        friendly_name: "v11"
+        value_template: "{{ is_state('binary_sensor.sensor_11', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_11_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_11_off
+           
+
+      v_switch_12:
+        unique_id:  houselights12
+        friendly_name: "v12"
+        value_template: "{{ is_state('binary_sensor.sensor_12', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_12_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_12_off
+           
+
+      v_switch_13:
+        unique_id:  houselights13
+        friendly_name: "v13"
+        value_template: "{{ is_state('binary_sensor.sensor_13', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_13_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_13_off         
+         
+
+      v_switch_14:
+        unique_id:  houselights14
+        friendly_name: "v14"
+        value_template: "{{ is_state('binary_sensor.sensor_14', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_14_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_14_off   
+           
+
+      v_switch_15:
+        unique_id:  houselights15
+        friendly_name: "v15"
+        value_template: "{{ is_state('binary_sensor.sensor_15', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_15_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_15_off
+           
+
+      v_switch_16:
+        unique_id:  houselights16
+        friendly_name: "v16"
+        value_template: "{{ is_state('binary_sensor.sensor_16', 'on') }}"
+        turn_on:
+          service: script.turn_on
+          entity_id: script.turn_16_on
+        turn_off:
+           service: script.turn_on
+           entity_id: script.turn_16_off      
