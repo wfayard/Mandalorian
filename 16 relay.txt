@@ -1,0 +1,307 @@
+esphome:
+  name: 16_channel_relay
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: "Your SSID"
+  password: "Your Password"
+  
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.0.206
+    # Set this to the IP address of the router. Often ends with .1
+    gateway: 192.168.0.1
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "16 Channel Relay"
+    password: "JNXYsTZV0es3"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+
+ota:
+
+
+
+
+web_server:
+  port: 80
+
+
+
+i2c:
+  sda: D1
+  scl: D2
+  scan: True
+
+mcp23017:
+  - id: 'mcp23017_hub'
+    address: 0x20
+
+switch:
+- platform: gpio
+  id: relay_channel_1
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 0
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 1"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_1
+    - delay: 300ms
+    - switch.turn_off: relay_channel_1
+    
+- platform: gpio
+  id: relay_channel_2
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 1
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 2"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_2
+    - delay: 300ms
+    - switch.turn_off: relay_channel_2
+    
+- platform: gpio
+  id: relay_channel_3
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 2
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 3"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_3
+    - delay: 300ms
+    - switch.turn_off: relay_channel_3
+    
+- platform: gpio
+  id: relay_channel_4
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 3
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 4"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_4
+    - delay: 300ms
+    - switch.turn_off: relay_channel_4
+    
+- platform: gpio
+  id: relay_channel_5
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 4
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 5"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_5
+    - delay: 300ms
+    - switch.turn_off: relay_channel_5
+    
+- platform: gpio
+  id: relay_channel_6
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 5
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 6"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_6
+    - delay: 300ms
+    - switch.turn_off: relay_channel_6
+    
+- platform: gpio
+  id: relay_channel_7
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 6
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 7"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_7
+    - delay: 300ms
+    - switch.turn_off: relay_channel_7
+
+
+- platform: gpio
+  id: relay_channel_8
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 7
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 8"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_8
+    - delay: 300ms
+    - switch.turn_off: relay_channel_8 
+    
+- platform: gpio
+  id: relay_channel_9
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 8
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 9"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_9
+    - delay: 300ms
+    - switch.turn_off: relay_channel_9
+    
+- platform: gpio
+  id: relay_channel_12
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 9
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 10"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_12
+    - delay: 300ms
+    - switch.turn_off: relay_channel_12 
+    
+- platform: gpio
+  id: relay_channel_13
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 10
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 11"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_13
+    - delay: 300ms
+    - switch.turn_off: relay_channel_13
+    
+- platform: gpio
+  id: relay_channel_14
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 11
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 12"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_14
+    - delay: 300ms
+    - switch.turn_off: relay_channel_14 
+    
+- platform: gpio
+  id: relay_channel_15
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 13
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 13"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_15
+    - delay: 300ms
+    - switch.turn_off: relay_channel_15
+    
+- platform: gpio
+  id: relay_channel_16
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 14
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 14"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_16
+    - delay: 300ms
+    - switch.turn_off: relay_channel_16
+    
+- platform: gpio
+  id: relay_channel_11
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 15
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 15"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_11
+    - delay: 300ms
+    - switch.turn_off: relay_channel_11 
+    
+- platform: gpio
+  id: relay_channel_10
+  pin: 
+    mcp23017: mcp23017_hub
+    number: 16
+    inverted: true
+  restore_mode: ALWAYS_OFF
+  
+- platform: template
+  name: "Lights 16"
+  icon: mdi:electric-switch
+  turn_on_action:
+    - switch.turn_on: relay_channel_10
+    - delay: 300ms
+    - switch.turn_off: relay_channel_10 
