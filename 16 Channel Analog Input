@@ -1,0 +1,647 @@
+// Extend Analog Inputs for NodeMCU board using 16 channel Analog Multiplexer
+// Note : NodeMCU is a very famous micro-controller with Wifi function which is commonly used for Internet Of Thing (IOT) application. 
+// Note : However,NodeMCU only has one analog input which only allow to read one analog sensor.  
+// Note : This code is made practical to convert 1 Analog Input to up to 16 Analog Inputs using the 16-channel Analog Multiplexer Module.
+
+/*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/////////////*/
+
+#include <ESP8266WiFi.h> // Enables the ESP8266 to connect to the local network (via WiFi)
+#include <PubSubClient.h> // Allows us to connect to, and publish to the MQTT broker
+
+// WiFi
+// Make sure to update this for your own WiFi network!
+const char* ssid = "Your SSID";
+const char* wifi_password = "WIFI Password";
+
+// MQTT
+// Make sure to update this for your own MQTT Broker!
+const char* mqtt_server = "192.168.0.139";
+const char* mqtt_topic = "voltage_input";
+const char* mqtt_username = "Your_MQTT_Username";
+const char* mqtt_password = "Your_MQTT_Password";
+// The client id identifies the ESP8266 device. Think of it a bit like a hostname (Or just a name, like Greg).
+const char* clientID = "Analog Input";
+// Initialise the WiFi and MQTT Client objects
+WiFiClient wifiClient;
+PubSubClient client(mqtt_server, 1883, wifiClient); // 1883 is the listener port for the Broker
+
+//=========================================================================================================================================
+
+    /* 0- General */
+
+    #define S0 D0                             /* Assign Multiplexer pin S0 connect to pin D0 of NodeMCU */
+    #define S1 D1                             /* Assign Multiplexer pin S1 connect to pin D1 of NodeMCU */
+    #define S2 D2                             /* Assign Multiplexer pin S2 connect to pin D2 of NodeMCU */
+    #define S3 D3                             /* Assign Multiplexer pin S3 connect to pin D3 of NodeMCU */
+    #define SIG A0                            /* Assign SIG pin as Analog output for all 16 channels of Multiplexer to pin A0 of NodeMCU */
+
+    int decimal = 2;                          // Decimal places of the sensor value outputs 
+    int sensor0;                            /* Assign the name "sensor0" as analog output value from Channel C0 */
+    int sensor1;                            /* Assign the name "sensor1" as analog output value from Channel C1 */
+    int sensor2;                            /* Assign the name "sensor2" as analog output value from Channel C2 */
+    int sensor3;                            /* Assign the name "sensor3" as analog output value from Channel C3 */
+    int sensor4;                            /* Assign the name "sensor4" as analog output value from Channel C4 */
+    int sensor5;                            /* Assign the name "sensor5" as analog output value from Channel C5 */
+    int sensor6;                            /* Assign the name "sensor6" as analog output value from Channel C6 */
+    int sensor7;                            /* Assign the name "sensor7" as analog output value from Channel C7 */
+    int sensor8;                            /* Assign the name "sensor8" as analog output value from Channel C8 */
+    int sensor9;                            /* Assign the name "sensor9" as analog output value from Channel C9 */
+    int sensor10;                           /* Assign the name "sensor10" as analog output value from Channel C10 */
+    int sensor11;                           /* Assign the name "sensor11" as analog output value from Channel C11 */
+    int sensor12;                           /* Assign the name "sensor12" as analog output value from Channel C12 */
+    int sensor13;                           /* Assign the name "sensor13" as analog output value from Channel C13 */
+    int sensor14;                           /* Assign the name "sensor14" as analog output value from Channel C14 */
+    int sensor15;                           /* Assign the name "sensor15" as analog output value from Channel C15 */
+
+
+void setup() {                                /* Put your codes here to run only once during micro controller startup */
+
+    /* 0- General */
+    
+    pinMode(S0,OUTPUT);                       /* Define digital signal pin as output to the Multiplexer pin SO */        
+    pinMode(S1,OUTPUT);                       /* Define digital signal pin as output to the Multiplexer pin S1 */  
+    pinMode(S2,OUTPUT);                       /* Define digital signal pin as output to the Multiplexer pin S2 */ 
+    pinMode(S3,OUTPUT);                       /* Define digital signal pin as output to the Multiplexer pin S3 */  
+    pinMode(SIG, INPUT);                      /* Define analog signal pin as input or receiver from the Multiplexer pin SIG */  
+    
+    Serial.begin(9600);                       /* to display readings in Serial Monitor at 9600 baud rates */
+
+
+//=========================================WIFI Connections
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+   // Connect to the WiFi
+    WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, wifi_password);
+
+    // Wait until the connection has been confirmed before continuing
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+    // Debugging - Output the IP Address of the ESP8266
+  Serial.println("WiFi connected");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  // Connect to MQTT Broker
+  // client.connect returns a boolean value to let us know if the connection was successful.
+  // If the connection is failing, make sure you are using the correct MQTT Username and Password (Setup Earlier in the Instructable)
+  if (client.connect(clientID, mqtt_username, mqtt_password)) {
+    Serial.println("Connected to MQTT Broker!");
+  }
+  else {
+    Serial.println("Connection to MQTT Broker failed...");
+  }
+
+  
+}
+
+
+void loop() {                                 /* Put your codes here to run over and over again endlessly */
+
+    /* 0- General */
+
+    // Channel 0 (C0 pin - binary output 0,0,0,0)
+    digitalWrite(S0,LOW); digitalWrite(S1,LOW); digitalWrite(S2,LOW); digitalWrite(S3,LOW);
+    sensor0 = analogRead(SIG);
+  
+    // Channel 1 (C1 pin - binary output 1,0,0,0)
+    digitalWrite(S0,HIGH); digitalWrite(S1,LOW); digitalWrite(S2,LOW); digitalWrite(S3,LOW);
+    sensor1 = analogRead(SIG);
+  
+    // Channel 2 (C2 pin - binary output 0,1,0,0)
+    digitalWrite(S0,LOW); digitalWrite(S1,HIGH); digitalWrite(S2,LOW); digitalWrite(S3,LOW);
+    sensor2 = analogRead(SIG);
+  
+    // Channel 3 (C3 pin - binary output 1,1,0,0)
+    digitalWrite(S0,HIGH); digitalWrite(S1,HIGH); digitalWrite(S2,LOW); digitalWrite(S3,LOW);
+    sensor3 = analogRead(SIG);
+  
+    // Channel 4 (C4 pin - binary output 0,0,1,0)
+    digitalWrite(S0,LOW); digitalWrite(S1,LOW); digitalWrite(S2,HIGH); digitalWrite(S3,LOW);
+    sensor4 = analogRead(SIG);
+  
+    // Channel 5 (C5 pin - binary output 1,0,1,0)
+    digitalWrite(S0,HIGH); digitalWrite(S1,LOW); digitalWrite(S2,HIGH); digitalWrite(S3,LOW);
+    sensor5 = analogRead(SIG);
+
+    // Channel 6 (C6 pin - binary output 0,1,1,0)
+    digitalWrite(S0,LOW); digitalWrite(S1,HIGH); digitalWrite(S2,HIGH); digitalWrite(S3,LOW);
+    sensor6 = analogRead(SIG);
+
+    // Channel 7 (C7 pin - binary output 1,1,1,0)
+    digitalWrite(S0,HIGH); digitalWrite(S1,HIGH); digitalWrite(S2,HIGH); digitalWrite(S3,LOW);
+    sensor7 = analogRead(SIG);
+
+    // Channel 8 (C8 pin - binary output 0,0,0,1)
+    digitalWrite(S0,LOW); digitalWrite(S1,LOW); digitalWrite(S2,LOW); digitalWrite(S3,HIGH);
+    sensor8 = analogRead(SIG);
+
+    // Channel 9 (C9 pin - binary output 1,0,0,1)
+    digitalWrite(S0,HIGH); digitalWrite(S1,LOW); digitalWrite(S2,LOW); digitalWrite(S3,HIGH);
+    sensor9 = analogRead(SIG);
+
+    // Channel 10 (C10 pin - binary output 0,1,0,1)
+    digitalWrite(S0,LOW); digitalWrite(S1,HIGH); digitalWrite(S2,LOW); digitalWrite(S3,HIGH);
+    sensor10 = analogRead(SIG);
+
+    // Channel 11 (C11 pin - binary output 1,1,0,1)
+    digitalWrite(S0,HIGH); digitalWrite(S1,HIGH); digitalWrite(S2,LOW); digitalWrite(S3,HIGH);
+    sensor11 = analogRead(SIG);
+
+    // Channel 12 (C12 pin - binary output 0,0,1,1)
+    digitalWrite(S0,LOW); digitalWrite(S1,LOW); digitalWrite(S2,HIGH); digitalWrite(S3,HIGH);
+    sensor12 = analogRead(SIG);
+
+    // Channel 13 (C13 pin - binary output 1,0,1,1)
+    digitalWrite(S0,HIGH); digitalWrite(S1,LOW); digitalWrite(S2,HIGH); digitalWrite(S3,HIGH);
+    sensor13 = analogRead(SIG);
+
+    // Channel 14 (C14 pin - binary output 0,1,1,1)
+    digitalWrite(S0,LOW); digitalWrite(S1,HIGH); digitalWrite(S2,HIGH); digitalWrite(S3,HIGH);
+    sensor14 = analogRead(SIG);
+
+    // Channel 15 (C15 pin - binary output 1,1,1,1)
+    digitalWrite(S0,HIGH); digitalWrite(S1,HIGH); digitalWrite(S2,HIGH); digitalWrite(S3,HIGH);
+    sensor15 = analogRead(SIG);
+
+    
+  mqtt_topic = "voltage_input_1";
+  if(sensor0 > 50)
+  {
+    // PUBLISH to the MQTT Broker (topic = mqtt_topic, defined at the beginning)
+    // Here, "Sensor Value!" is the Payload, but this could be changed to a sensor reading, for example.
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(0); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+  else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "sensor_0: OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_2";
+  if(sensor1> 50)
+  {
+   if (client.publish(mqtt_topic, "ON")) {
+      }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "sensor_1: ON");
+    }
+  }
+  else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_3";
+  if(sensor2> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+    client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_4";
+  if(sensor3> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_5";
+  if(sensor4> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_6";
+  if(sensor5> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+     
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_7";
+  if(sensor6> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_8";
+  if(sensor7> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_9";
+  if(sensor8> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+     
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+     
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "sensor_8: OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_10";
+  if(sensor9> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_11";
+  if(sensor10> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_12";
+  if(sensor11> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_13";
+  if(sensor12> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+     
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_14";
+  if(sensor13> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      Serial.println("Sensor 13: Message sent!");
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+      }
+
+  mqtt_topic = "voltage_input_15";    
+  if(sensor14> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      Serial.println("Sensor1: Message sent!");
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "sensor_14: OFF");
+    }
+  }
+  mqtt_topic = "voltage_input_16";
+  if(sensor15> 50)
+  {
+    if (client.publish(mqtt_topic, "ON")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+      client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "ON");
+    }
+  }
+    else
+  {
+       if (client.publish(mqtt_topic, "OFF")) {
+      
+    }
+    // Again, client.publish will return a boolean value depending on whether it succeded or not.
+    // If the message failed to send, we will try again, as the connection may have broken.
+    else {
+      Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
+     client.connect(clientID, mqtt_username, mqtt_password);
+      delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
+      client.publish(mqtt_topic, "OFF");
+    }
+  }
+    delay(1000);                                                  // Read the value every second
+
+}
