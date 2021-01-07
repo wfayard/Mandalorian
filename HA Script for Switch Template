@@ -1,0 +1,10 @@
+alias: turn_7_off
+sequence:
+  - condition: state
+    entity_id: binary_sensor.sensor_7
+    state: 'on'
+  - type: toggle
+    device_id: 06a1cb46051eaacd419ea7b07ec3b948
+    entity_id: switch.lights_7
+    domain: switch
+mode: restart
